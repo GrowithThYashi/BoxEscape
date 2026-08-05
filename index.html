@@ -1,63 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NP4XM6L6WE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<head>
 
-  gtag('config', 'G-NP4XM6L6WE');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NP4XM6L6WE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NP4XM6L6WE');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Box Escape</title>
+
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-    <div id="game-wrapper">
+<div id="game-wrapper">
 
-        <!-- Header -->
-        <header id="header">
-            <h1>Box Escape</h1>
+    <header id="header">
+        <h1>BOX ESCAPE</h1>
 
-            <div id="best-score"><strong>Best Score</strong>: 0</div>
+        <div id="best-score">
+            <strong>Best Score</strong>: 0
+        </div>
 
-            <div id="score">Score: 0</div>
-        </header>
+        <div id="score">
+            Score: 0
+        </div>
+    </header>
 
-        <!-- Gameplay Area -->
-        <main id="game-container">
+
+    <main id="game-container">
+
+        <div id="overlay"></div>
+
+        <div id="popup">
 
             <div id="start-screen">
-                <p>Avoid the red boxes. Use the Left and Right buttons to move.</p>
+                <p>Avoid the red boxes. Use the arrow buttons to move.</p>
                 <button id="start-btn">Start Game</button>
             </div>
 
-            <div id="player"></div>
-
-            <div id="obstacle"></div>
-            <div id="obstacle-two"></div>
-            <div id="obstacle-three"></div>
-
             <div id="game-over-screen" hidden>
                 <h2>Game Over</h2>
+                <p id="final-score"></p>
                 <button id="restart-btn">Restart</button>
             </div>
 
-        </main>
+        </div>
 
-        <!-- Controls -->
-        <section id="controls">
-            <button id="left-btn">◀ Left</button>
-            <button id="right-btn">▶ Right</button>
-        </section>
 
-    </div>
+        <div id="player"></div>
 
-    <script src="script.js"></script>
+        <div id="obstacle"></div>
+        <div id="obstacle-two"></div>
+        <div id="obstacle-three"></div>
+
+    </main>
+
+
+    <section id="controls">
+
+        <button id="left-btn">◀</button>
+
+        <button id="right-btn">▶</button>
+
+    </section>
+
+
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
