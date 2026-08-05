@@ -1,0 +1,186 @@
+/* Page */
+
+body {
+    margin: 0;
+    padding: 30px 20px;
+    background: white;
+    font-family: Arial, Helvetica, sans-serif;
+
+    display: flex;
+    justify-content: center;
+}
+
+/* Main Layout */
+
+#game-wrapper {
+    width: min(90vw, 300px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header */
+
+#header {
+    width: 100%;
+
+    border: 3px solid #222;
+    background: white;
+
+    padding: clamp(10px, 4vw, 15px);
+    box-sizing: border-box;
+
+    text-align: center;
+}
+
+#header h1 {
+    margin: 0 0 15px;
+    font-size: clamp(28px, 8vw, 36px);
+}
+
+#best-score,
+#score {
+    font-size: clamp(20px, 6vw, 24px);
+    font-weight: bold;
+}
+
+#score {
+    margin-top: 10px;
+}
+
+/* Gameplay Area */
+
+#game-container {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 5 / 7;
+
+    border: 3px solid #222;
+    background: white;
+
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Player */
+
+#player {
+    position: absolute;
+
+    width: clamp(20px, 8vw, 25px);
+    height: clamp(20px, 8vw, 25px);
+
+    background: #1e88e5;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform: translateX(-50%);
+}
+
+/* Three Obstacles */
+
+#obstacle,
+#obstacle-two,
+#obstacle-three {
+    position: absolute;
+
+    width: clamp(32px, 12vw, 40px);
+    height: clamp(32px, 12vw, 40px);
+
+    background: #e53935;
+}
+
+/* Start Screen */
+
+#start-screen {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 10;
+}
+
+#start-screen p {
+    font-size: clamp(16px, 5vw, 18px);
+}
+
+#start-btn,
+#restart-btn {
+    font-size: clamp(20px, 6vw, 24px);
+    padding: 12px 25px;
+    cursor: pointer;
+}
+
+/* Game Over */
+
+#game-over-screen {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    z-index: 11;
+}
+
+#game-over-screen[hidden],
+#start-screen[hidden] {
+    display: none;
+}
+
+#game-over-screen h2 {
+    font-size: clamp(30px, 10vw, 36px);
+    margin-bottom: 20px;
+}
+
+/* Controls */
+
+#controls {
+    width: 100%;
+
+    display: flex;
+    gap: 15px;
+}
+
+#controls button {
+    flex: 1;
+
+    min-height: 65px;
+
+    font-size: clamp(20px, 7vw, 26px);
+    font-weight: bold;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+@media (max-width: 400px) {
+    body {
+        padding: 15px 10px;
+    }
+
+    #game-wrapper {
+        width: 95vw;
+    }
+
+    #controls button {
+        min-height: 70px;
+    }
+}

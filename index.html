@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Escape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <h1>Box Escape</h1>
+
+            <div id="best-score"><strong>Best Score</strong>: 0</div>
+
+            <div id="score">Score: 0</div>
+        </header>
+
+        <!-- Gameplay Area -->
+        <main id="game-container">
+
+            <div id="start-screen">
+                <p>Avoid the red boxes. Use the Left and Right buttons to move.</p>
+                <button id="start-btn">Start Game</button>
+            </div>
+
+            <div id="player"></div>
+
+            <div id="obstacle"></div>
+            <div id="obstacle-two"></div>
+            <div id="obstacle-three"></div>
+
+            <div id="game-over-screen" hidden>
+                <h2>Game Over</h2>
+                <button id="restart-btn">Restart</button>
+            </div>
+
+        </main>
+
+        <!-- Controls -->
+        <section id="controls">
+            <button id="left-btn">◀ Left</button>
+            <button id="right-btn">▶ Right</button>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
