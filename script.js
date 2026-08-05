@@ -16,14 +16,21 @@ const rightBtn = document.getElementById("right-btn");
 const scoreDisplay = document.getElementById("score");
 const bestScoreDisplay = document.getElementById("best-score");
 
+const overlay = document.getElementById("overlay");
+const popup = document.getElementById("popup");
+
 const startScreen = document.getElementById("start-screen");
 const startBtn = document.getElementById("start-btn");
 
 const gameOverScreen = document.getElementById("game-over-screen");
 const restartBtn = document.getElementById("restart-btn");
 
+const finalScoreDisplay = document.getElementById("final-score");
+
+
 const MOVE_SPEED = 220;
 const BASE_OBSTACLE_SPEED = 180;
+
 
 const backgroundColors = [
     "#ffffff",
@@ -33,9 +40,11 @@ const backgroundColors = [
     "#dcf8dc"
 ];
 
+
 let obstacleSpeed = BASE_OBSTACLE_SPEED;
 
 let playerX;
+
 let obstacles = [];
 
 let score = 0;
@@ -43,246 +52,535 @@ let score = 0;
 let bestScore =
     Number(localStorage.getItem("boxEscapeBestScore")) || 0;
 
+
 let moveDirection = 0;
+
 let gameStarted = false;
+
 let gameOver = false;
+
 
 let lastTime = performance.now();
 
+
 updateBestScoreDisplay();
 
-function resetGame() {
-    playerX = (gameContainer.clientWidth - player.offsetWidth) / 2;
+
+
+function showPopup(type){
+
+    overlay.style.display = "block";
+    popup.classList.remove("hidden");
+
+    startScreen.hidden = type !== "start";
+    gameOverScreen.hidden = type !== "gameover";
+
+}
+
+
+
+function hidePopup(){
+
+    overlay.style.display = "none";
+    popup.classList.add("hidden");
+
+}
+
+
+
+function resetGame(){
+
+    playerX =
+        (gameContainer.clientWidth - player.offsetWidth) / 2;
+
 
     score = 0;
+
     obstacleSpeed = BASE_OBSTACLE_SPEED;
 
+
     updateScore();
+
     updateBackground();
+
 
     obstacles = createObstacleSet();
 
+
     moveDirection = 0;
+
     gameOver = false;
 
-    gameOverScreen.hidden = true;
+
+    hidePopup();
+
 
     updatePlayerPosition();
+
     updateObstacles();
+
 }
 
-function startGame() {
+
+
+function startGame(){
+
     resetGame();
 
-    startScreen.hidden = true;
     gameStarted = true;
+
 }
+
+
 
 startBtn.addEventListener("click", startGame);
 
+
+
 restartBtn.addEventListener("click", () => {
+
     resetGame();
+
     gameStarted = true;
+
 });
+
+
 
 // Controls
 
+
 leftBtn.addEventListener("mousedown", () => startMoving(-1));
+
 rightBtn.addEventListener("mousedown", () => startMoving(1));
 
+
 leftBtn.addEventListener("touchstart", e => {
+
     e.preventDefault();
+
     startMoving(-1);
-}, { passive: false });
+
+}, { passive:false });
+
+
 
 rightBtn.addEventListener("touchstart", e => {
+
     e.preventDefault();
+
     startMoving(1);
-}, { passive: false });
+
+}, { passive:false });
+
+
 
 leftBtn.addEventListener("mouseup", stopMoving);
+
 rightBtn.addEventListener("mouseup", stopMoving);
 
+
 leftBtn.addEventListener("touchend", stopMoving);
+
 rightBtn.addEventListener("touchend", stopMoving);
 
+
 document.addEventListener("mouseup", stopMoving);
+
 document.addEventListener("touchend", stopMoving);
 
-function startMoving(direction) {
-    if (!gameStarted || gameOver) return;
+
+
+function startMoving(direction){
+
+    if(!gameStarted || gameOver) return;
+
     moveDirection = direction;
+
 }
 
-function stopMoving() {
+
+
+function stopMoving(){
+
     moveDirection = 0;
+
 }
 
-function createObstacleSet() {
+
+
+
+
+function createObstacleSet(){
+
     let positions = [];
 
-    while (positions.length < 3) {
+
+    while(positions.length < 3){
+
         let x = randomObstacleX();
 
-        if (!positions.some(pos => Math.abs(pos - x) < 60)) {
+
+        if(!positions.some(pos => Math.abs(pos - x) < 60)){
+
             positions.push(x);
+
         }
+
     }
 
+
+
     return [
+
         {
             element: obstacle,
             x: positions[0],
             y: -40
         },
+
         {
             element: obstacleTwo,
             x: positions[1],
             y: -180
         },
+
         {
             element: obstacleThree,
             x: positions[2],
             y: -320
         }
+
     ];
+
 }
 
-function randomObstacleX() {
+
+
+function randomObstacleX(){
+
     return Math.random() *
-        (gameContainer.clientWidth - obstacle.offsetWidth);
+    (gameContainer.clientWidth - obstacle.offsetWidth);
+
 }
 
-function recycleObstacle(item, otherObstacles) {
+
+
+function recycleObstacle(item, others){
+
     let newX = randomObstacleX();
 
-    while (
-        otherObstacles.some(other =>
+
+    while(
+        others.some(other =>
             Math.abs(newX - other.x) < 60
         )
-    ) {
+    ){
+
         newX = randomObstacleX();
+
     }
 
+
     item.x = newX;
+
     item.y = -40 - Math.random() * 200;
+
 }
 
-function gameLoop(currentTime) {
-    const deltaTime = (currentTime - lastTime) / 1000;
+
+
+
+
+function gameLoop(currentTime){
+
+
+    const deltaTime =
+        (currentTime - lastTime) / 1000;
+
+
     lastTime = currentTime;
 
-    if (gameStarted && !gameOver) {
 
-        if (moveDirection !== 0) {
-            playerX += moveDirection * MOVE_SPEED * deltaTime;
+
+    if(gameStarted && !gameOver){
+
+
+
+        if(moveDirection !== 0){
+
+
+            playerX +=
+                moveDirection *
+                MOVE_SPEED *
+                deltaTime;
+
+
 
             const maxX =
-                gameContainer.clientWidth - player.offsetWidth;
+                gameContainer.clientWidth -
+                player.offsetWidth;
 
-            playerX = Math.max(0, Math.min(playerX, maxX));
+
+
+            playerX =
+                Math.max(0, Math.min(playerX,maxX));
+
 
             updatePlayerPosition();
+
         }
 
-        obstacles.forEach(item => {
-            item.y += obstacleSpeed * deltaTime;
 
-            if (item.y > gameContainer.clientHeight) {
+
+
+
+        obstacles.forEach(item => {
+
+
+            item.y +=
+                obstacleSpeed *
+                deltaTime;
+
+
+
+            if(item.y > gameContainer.clientHeight){
+
 
                 score++;
 
+
                 updateScore();
+
                 updateBackground();
 
-                if (score % 5 === 0) {
+
+
+                if(score % 5 === 0){
+
                     obstacleSpeed += 15;
+
                 }
 
-                const others = obstacles.filter(
-                    other => other !== item
-                );
 
-                recycleObstacle(item, others);
+
+                const others =
+                    obstacles.filter(
+                        other => other !== item
+                    );
+
+
+
+                recycleObstacle(item,others);
+
+
             }
+
+
         });
+
+
 
         updateObstacles();
 
-        if (checkCollision()) {
+
+
+        if(checkCollision()){
+
             endGame();
+
         }
+
+
+
     }
 
+
+
     requestAnimationFrame(gameLoop);
+
 }
 
-function checkCollision() {
-    const playerRect = player.getBoundingClientRect();
+
+
+
+
+
+function checkCollision(){
+
+
+    const playerRect =
+        player.getBoundingClientRect();
+
+
 
     return obstacles.some(item => {
+
+
         const obstacleRect =
             item.element.getBoundingClientRect();
 
+
+
         return (
+
             playerRect.left < obstacleRect.right &&
+
             playerRect.right > obstacleRect.left &&
+
             playerRect.top < obstacleRect.bottom &&
+
             playerRect.bottom > obstacleRect.top
+
         );
+
+
     });
+
+
 }
 
-function endGame() {
+
+
+
+
+function endGame(){
+
+
     gameOver = true;
+
     moveDirection = 0;
+
 
     updateBestScore();
 
-    gameOverScreen.hidden = false;
+
+
+    finalScoreDisplay.textContent =
+        `Final Score: ${score}`;
+
+
+    showPopup("gameover");
+
+
 }
 
-function updateScore() {
-    scoreDisplay.textContent = `Score: ${score}`;
+
+
+
+
+function updateScore(){
+
+    scoreDisplay.textContent =
+        `Score: ${score}`;
+
 }
 
-function updateBestScore() {
-    if (score > bestScore) {
+
+
+
+
+function updateBestScore(){
+
+
+    if(score > bestScore){
+
+
         bestScore = score;
+
 
         localStorage.setItem(
             "boxEscapeBestScore",
             bestScore
         );
 
+
         updateBestScoreDisplay();
+
+
     }
+
+
 }
 
-function updateBestScoreDisplay() {
+
+
+
+
+function updateBestScoreDisplay(){
+
+
     bestScoreDisplay.innerHTML =
         `<strong>Best Score</strong>: ${bestScore}`;
+
+
 }
 
-function updateBackground() {
+
+
+
+
+function updateBackground(){
+
+
     const colorIndex =
-        Math.floor(score / 5) % backgroundColors.length;
+        Math.floor(score / 5)
+        % backgroundColors.length;
+
+
 
     gameContainer.style.backgroundColor =
         backgroundColors[colorIndex];
+
 }
 
-function updatePlayerPosition() {
-    player.style.left = playerX + "px";
-    player.style.transform = "none";
+
+
+
+
+function updatePlayerPosition(){
+
+    player.style.left =
+        playerX + "px";
+
+
+    player.style.transform =
+        "none";
+
 }
 
-function updateObstacles() {
+
+
+
+
+function updateObstacles(){
+
+
     obstacles.forEach(item => {
-        item.element.style.left = item.x + "px";
-        item.element.style.top = item.y + "px";
+
+
+        item.element.style.left =
+            item.x + "px";
+
+
+        item.element.style.top =
+            item.y + "px";
+
+
     });
+
+
 }
+
+
+
+
+
+// Initial state
 
 resetGame();
+
+showPopup("start");
+
+
 requestAnimationFrame(gameLoop);
