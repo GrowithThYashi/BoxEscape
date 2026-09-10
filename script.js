@@ -26,6 +26,7 @@ const gameOverScreen = document.getElementById("game-over-screen");
 const restartBtn = document.getElementById("restart-btn");
 
 const finalScoreDisplay = document.getElementById("final-score");
+const countdown = document.getElementById("countdown");
 
 
 const MOVE_SPEED = 220;
@@ -40,6 +41,26 @@ const backgroundColors = [
     "#dcf8dc"
 ];
 
+const obstacleShapes = [
+    "obstacle-diamond",
+    "obstacle-rectangle",
+    "obstacle-pentagon",
+    "obstacle-circle",
+    "obstacle-star",
+    "obstacle-heart",
+    "obstacle-raindrop"
+
+];
+
+const obstacleColors = [
+    "obstacle-red",
+    "obstacle-purple",
+    "obstacle-dark-blue",
+    "obstacle-green",
+    "obstacle-pink",
+    "obstacle-violet",
+    "obstacle-sky-blue"
+];
 
 let obstacleSpeed = BASE_OBSTACLE_SPEED;
 
@@ -57,8 +78,9 @@ let moveDirection = 0;
 
 let gameStarted = false;
 
-let gameOver = false;
+let countdownActive = false;
 
+let gameOver = false;
 
 let lastTime = performance.now();
 
@@ -108,6 +130,7 @@ function resetGame(){
 
 
     moveDirection = 0;
+    gameStarted = false;
 
     gameOver = false;
 
@@ -121,16 +144,53 @@ function resetGame(){
 
 }
 
+async function startCountdown(){
+
+    countdownActive = true;
+
+    const steps = [
+        { text: "3", time: 650 },
+        { text: "2", time: 650 },
+        { text: "1", time: 650 },
+        { text: "GO!", time: 500 }
+    ];
+
+    countdown.hidden = false;
+
+    for (const step of steps) {
+
+    countdown.classList.remove("animate");
+
+    // restart the animation
+    void countdown.offsetWidth;
+
+    countdown.textContent = step.text;
+
+    countdown.classList.add("animate");
+
+    await new Promise(resolve =>
+        setTimeout(resolve, step.time)
+    );
+
+}
+
+    countdown.hidden = true;
+
+    countdownActive = false;
+
+    gameStarted = true;
+
+}
+
 
 
 function startGame(){
 
     resetGame();
 
-    gameStarted = true;
+    startCountdown();
 
 }
-
 
 
 startBtn.addEventListener("click", startGame);
@@ -141,7 +201,7 @@ restartBtn.addEventListener("click", () => {
 
     resetGame();
 
-    gameStarted = true;
+    startCountdown();
 
 });
 
@@ -193,7 +253,7 @@ document.addEventListener("touchend", stopMoving);
 
 function startMoving(direction){
 
-    if(!gameStarted || gameOver) return;
+    if(!gameStarted || gameOver || countdownActive) return;
 
     moveDirection = direction;
 
@@ -231,27 +291,31 @@ function createObstacleSet(){
 
 
 
-    return [
+    const items = [
 
-        {
-            element: obstacle,
-            x: positions[0],
-            y: -40
-        },
+    {
+        element: obstacle,
+        x: positions[0],
+        y: -40
+    },
 
-        {
-            element: obstacleTwo,
-            x: positions[1],
-            y: -180
-        },
+    {
+        element: obstacleTwo,
+        x: positions[1],
+        y: -180
+    },
 
-        {
-            element: obstacleThree,
-            x: positions[2],
-            y: -320
-        }
+    {
+        element: obstacleThree,
+        x: positions[2],
+        y: -320
+    }
 
-    ];
+];
+
+items.forEach(applyObstacleAppearance);
+
+return items;
 
 }
 
@@ -285,10 +349,58 @@ function recycleObstacle(item, others){
     item.x = newX;
 
     item.y = -40 - Math.random() * 200;
+    applyObstacleAppearance(item);
 
 }
 
+function applyObstacleAppearance(item){
 
+    const element = item.element;
+
+    element.classList.remove(
+        "obstacle-square",
+        "obstacle-diamond",
+        "obstacle-rectangle",
+        "obstacle-pentagon",
+        "obstacle-circle",
+        "obstacle-star",
+        "obstacle-heart",
+        "obstacle-raindrop",
+        "obstacle-red",
+        "obstacle-purple",
+        "obstacle-dark-blue",
+        "obstacle-green",
+        "obstacle-pink",
+        "obstacle-violet",
+        "obstacle-sky-blue"
+    );
+
+
+    const shape =
+        obstacleShapes[
+            Math.floor(
+                Math.random()*obstacleShapes.length
+            )
+        ];
+
+
+    const color =
+        obstacleColors[
+            Math.floor(
+                Math.random()*obstacleColors.length
+            )
+        ];
+
+
+    element.style.background = "";
+
+    element.style.height = "";
+
+    element.classList.add(shape);
+
+    element.classList.add(color);
+
+}
 
 
 

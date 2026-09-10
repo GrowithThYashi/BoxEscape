@@ -212,8 +212,123 @@ body {
 
     background: #e53935;
 
+    transition:
+        background-color 0.35s ease,
+        clip-path 0.35s ease,
+        transform 0.35s ease;
+
 }
 
+
+/* Colors */
+
+.obstacle-red{
+    background:#8B0000 !important;
+}
+
+.obstacle-purple{
+    background:#4B0082 !important;
+}
+
+.obstacle-dark-blue{
+    background:#003366 !important;
+}
+
+.obstacle-pink{
+    background:#ff69b4 !important;
+}
+
+.obstacle-violet{
+    background:#8a2be2 !important;
+}
+
+.obstacle-sky-blue{
+    background:#00bfff !important;
+}
+
+/* Shapes */
+
+.obstacle-square{
+    clip-path:none;
+    transform:none;
+}
+
+.obstacle-diamond{
+    clip-path:none;
+    transform:rotate(45deg);
+}
+
+.obstacle-rectangle{
+    clip-path:none;
+    transform:none;
+    height:clamp(24px,9vw,30px);
+}
+
+.obstacle-pentagon{
+    transform:none;
+
+    clip-path:polygon(
+        50% 0%,
+        100% 38%,
+        82% 100%,
+        18% 100%,
+        0% 38%
+    );
+}
+
+.obstacle-circle {
+    width: clamp(32px, 12vw, 40px);
+    height: clamp(32px, 12vw, 40px);
+
+    border-radius: 50%;
+
+    transform: none;
+}
+.obstacle-heart {
+    width: clamp(32px, 12vw, 40px);
+    height: clamp(32px, 12vw, 40px);
+
+    clip-path: polygon(
+        50% 90%,
+        10% 45%,
+        15% 20%,
+        35% 10%,
+        50% 25%,
+        65% 10%,
+        85% 20%,
+        90% 45%
+    );
+
+    transform: none;
+}
+.obstacle-raindrop {
+    width: clamp(32px, 12vw, 40px);
+    height: clamp(32px, 12vw, 40px);
+
+    border-radius: 50% 50% 50% 0;
+
+    transform: rotate(-45deg);
+}
+
+.obstacle-star {
+    width: clamp(32px, 12vw, 40px);
+    height: clamp(32px, 12vw, 40px);
+
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 100%,
+        50% 75%,
+        21% 100%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+
+    transform: none;
+}
 
 /* Controls */
 
@@ -243,6 +358,57 @@ body {
     touch-action: manipulation;
 
 }
+    /* Countdown */
+#countdown{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:clamp(60px,18vw,100px);
+    font-weight:bold;
+    color:#222;
+
+    background:rgba(255,255,255,0.15);
+
+    z-index:20;
+
+    pointer-events:none;
+
+    user-select:none;
+}
+
+@keyframes countdownPop {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    25% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+
+    60% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.85);
+        opacity: 0.9;
+    }
+}
+
+#countdown.animate{
+    animation: countdownPop .45s ease;
+}
+
+#countdown[hidden]{
+    display:none;
+}
 
 
 @media(max-width:400px){
@@ -267,4 +433,15 @@ body {
 
     }
 
+}
+#restart-btn {
+    background: #00c853;
+    color: white;
+    border: 3px solid #008f3d;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(0, 200, 83, 0.7);
+}
+
+#restart-btn:hover {
+    background: #00e676;
 }
